@@ -1,0 +1,27 @@
+//Example selector implementation
+public class AccountSelector extends SObjectSelector{
+    
+    public AccountSelector(){
+        Initialize(Account.getSObjectType());
+        populateFieldsToSelect();
+    }
+    
+    public AccountSelector(Set<String> additionalFields){
+        Initialize(Account.getSObjectType());
+        populateFieldsToSelect(additionalFields);
+    }
+    
+    private void populateFieldsToSelect(){
+        Set<String> baseFields = new Set<String>{
+            'Id',
+                'Name',
+                'AccountNumber'
+        };
+        fieldsToSelect.addAll(baseFields);
+    }
+    
+    private void populateFieldsToSelect(Set<String> additionalFields){
+        fieldsToSelect.addAll(additionalFields);
+        populateFieldsToSelect();
+    }
+}
