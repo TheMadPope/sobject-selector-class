@@ -1,0 +1,70 @@
+public virtual class SObjectSelector {
+    
+    public Set<String> fieldsToSelect { get; set; }
+    public Schema.SObjectType sObjectType { get; set; }
+    public Schema.DescribeSObjectResult describeResult { get ;set; }
+    public String objectName { get ;set; }
+
+    /**
+    * Construct an instance and get all the defaults that we need
+    * @param objectTypeToSelect (Schema.SObjectType): Write the parameter description
+    * @throws [Exception Class name here]
+    */
+    public SObjectSelector(Schema.SObjectType objectTypeToSelect){
+        fieldsToSelect = new Set<String>();
+        privateInitialize(objectTypeToSelect);
+    }
+
+    public SObjectSelector(Schema.SObjectType objectTypeToSelect, Set<String> additionalFields){
+        fieldsToSelect = new Set<String>(additionalFields);
+        privateInitialize(objectTypeToSelect);
+    }
+
+    private void privateInitialize(Schema.SObjectType objectTypeToSelect){
+        sObjectType = objectTypeToSelect;
+        describeResult = sObjectType.getDescribe();
+        objectName = describeResult.getName();
+    }
+
+    public sObject getFirstRecordFromList(List<sObject> records){
+        if (records.isEmpty()){
+            return null;
+        }
+        return records[0];
+    }
+
+    public String buildBaseQuery(){
+        String query = String.join(new List<String>(fieldsToSelect), ',');
+        query = query + ' FROM ' + objectName;
+        return query;
+    }
+
+    public List<sObject> secureRead(List<sObject> records){
+        SObjectAccessDecision decision = Security.stripInaccessible(AccessType.READABLE, records);
+        return decision.getRecords();
+    }
+
+    public virtual sObject selectById(Id recordId){
+        String query = buildBaseQuery() + ' WHERE Id=:recordId';
+        List<sObject> records = secureRead(Database.query(String.escapeSingleQuotes(query)));
+        return getFirstRecordFromList(records);
+    }
+
+    public virtual sObject selectByIds(Set<Id> recordIds){
+        String query = buildBaseQuery() + ' WHERE Id IN:recordIds';
+        List<sObject> records = secureRead(Database.query(String.escapeSingleQuotes(query)));
+        return getFirstRecordFromList(records);
+    }
+
+    public virtual sObject selectByRelatedFieldValue(String relatedFieldName, String relatedFieldValue){
+        String query = buildBaseQuery() + ' WHERE ' +  relatedFieldName + ' =:relatedFieldValue';
+        List<sObject> records = secureRead(Database.query(String.escapeSingleQuotes(query)));
+        return getFirstRecordFromList(records);
+    }
+
+    public virtual sObject selectByRelatedFieldValues(String relatedFieldName, Set<String> relatedFieldValues){
+        String query = buildBaseQuery() + ' WHERE ' +  relatedFieldName + ' IN:relatedFieldValues';
+        List<sObject> records = secureRead(Database.query(String.escapeSingleQuotes(query)));
+        return getFirstRecordFromList(records);
+    }
+}
