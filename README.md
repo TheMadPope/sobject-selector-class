@@ -11,6 +11,7 @@ List<Account> records = s.selectAll();
 System.debug(Json.serializePretty(records));
 
 **OR**
+
 AccountSelector s = new AccountSelector();
 List<Account> records = s.selectAll();
 System.debug(Json.serializePretty(records));
