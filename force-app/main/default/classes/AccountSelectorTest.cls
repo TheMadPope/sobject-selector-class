@@ -43,7 +43,7 @@ public class AccountSelectorTest {
         System.assertEquals(3, selector.fieldsToSelect.size(), '3 fields should be specified, as populateFieldsToSelect is not overridden and 2 additional fields were specified');
         //Multiple asserts in this test because this behavior is bundled together. Only matters that there are 3 fields IF they are the RIGHT fields
         System.assert(selector.fieldsToSelect.contains('Id'), 'Id field should be specified by default');
-        System.assert(selector.fieldsToSelect.contains('RecordTypeId'), 'RecordTypeId field should be included as it was specified in the call to Initialize');
+        System.assert(selector.fieldsToSelect.contains('Phone'), 'Phone field should be included as it was specified in the call to Initialize');
         System.assert(selector.fieldsToSelect.contains('Name'), 'Name field should be included as it was specified in the call to Initialize');
     }
     
@@ -62,7 +62,7 @@ public class AccountSelectorTest {
         System.assertEquals(5, selector.fieldsToSelect.size(), '5 fields should be specified, as 2 additional fields were specified');
         //Multiple asserts in this test because this behavior is bundled together. Only matters that there are 3 fields IF they are the RIGHT fields
         System.assert(selector.fieldsToSelect.contains('Id'), 'Id field should be specified by default');
-        System.assert(selector.fieldsToSelect.contains('RecordTypeId'), 'RecordTypeId field should be included as it was specified in the call to Initialize');
+        System.assert(selector.fieldsToSelect.contains('Phone'), 'Phone field should be included as it was specified in the call to Initialize');
         System.assert(selector.fieldsToSelect.contains('Name'), 'Name field should be included as it was specified in the call to Initialize');
         System.assert(selector.fieldsToSelect.contains('AccountSource'), 'AccountSource field should be included as it was specified in the constructor');
         System.assert(selector.fieldsToSelect.contains('OwnerId'), 'OwnerId field should be included as it was specified in the call to constructor');

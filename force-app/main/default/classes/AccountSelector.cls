@@ -30,7 +30,7 @@ public class AccountSelector extends SObjectSelector{
         fieldsToSelect = new Set<String>{
             'Id',
                 'Name',
-                'RecordTypeId'
+                'Phone'
         };
     }
 }
